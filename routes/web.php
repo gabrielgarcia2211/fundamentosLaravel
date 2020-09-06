@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/tasks', 'TaskController@index');
+Route::post('/tasks', 'TaskController@store')->name('tasks.store');
+/*Route::get('/tasks/edit/{id}', 'TaskController@editView')->name('tasks.edit_view');
+Route::post('/tasks/{id}', 'TaskController@edit')->name('tasks.edit');*/
+Route::delete('/tasks/{id}', 'TaskController@destroy')->name('tasks.destroy');
