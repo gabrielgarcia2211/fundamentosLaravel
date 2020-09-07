@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
+use Illuminate\Support\Facades\Session;
 
 class TaskController extends Controller
 {
@@ -32,5 +34,57 @@ class TaskController extends Controller
         return redirect('/tasks');
 
       
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        
+        $task = Task::find($id);
+
+        if (empty($task)) {
+            return redirect('/tasks');
+        }
+
+        //$this->authorize('verify', $task);
+
+        $task->delete();
+        Session::flash('data', 'Tarea Eliminada');
+        return redirect('/tasks');
+
+      
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:255'
+        ]);
+
+        $task = Task::find($id);
+
+        if (empty($task)) {
+            return redirect('/tasks');
+        }
+
+        //$this->authorize('verify', $task);
+
+        $task->title = $request->title;
+        $task->save();
+        return redirect('/tasks');
+    }
+
+
+
+    public function editView($id)
+    {
+        $task = Task::find($id);
+
+        if (empty($task)) {
+            return redirect('/tasks');
+        }
+
+        //$this->authorize('verify', $task);
+
+        return view('tasks.edit', ['task' => $task]);
     }
 }
